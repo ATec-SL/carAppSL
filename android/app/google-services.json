@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "801302360269",
+    "firebase_url": "https://carappsl-9aee6.firebaseio.com",
+    "project_id": "carappsl-9aee6",
+    "storage_bucket": "carappsl-9aee6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801302360269:android:9ded15e0769684bde4b984",
+        "android_client_info": {
+          "package_name": "com.akashj.carappsl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801302360269-9jsf1hk3rf4dc46icpvhi7s4bu260hdi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6YB6bOuR9drkhWo9CDqqv_UYoBnTtJ8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801302360269-9jsf1hk3rf4dc46icpvhi7s4bu260hdi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
