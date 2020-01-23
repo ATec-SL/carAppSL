@@ -134,7 +134,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
         body: SingleChildScrollView(
           child: Container(
-            height: MediaQuery.of(context).size.height * 1.5,
+            height: MediaQuery.of(context).size.height * 1.6,
             child: Column(  //Create a column child in cscaffold
               mainAxisAlignment: MainAxisAlignment.center,  //To center the title
               crossAxisAlignment: CrossAxisAlignment.center,  //To center the title'

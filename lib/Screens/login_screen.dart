@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class LoginScreen extends StatefulWidget {
 
   static final String id = 'login_screen';
+  String errorMsg = 'Enter a valid email address';
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -14,14 +15,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String _email, _password;
 
-  _submit() {
+  submit(){
 
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
 
+      AuthService.login(_email, _password);
     }
-
-    AuthService.login(_email, _password);
   }
 
   @override
@@ -57,8 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(   //Email
                         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),   //Add padding around text field
                         child: TextFormField(    // Input label email
-                          decoration: InputDecoration(labelText: 'Vehicle Registration No'),
-                          validator: (input) => input.isEmpty ? 'Please enter a valid Vehicle Registration No': null,
+                          decoration: InputDecoration(labelText: 'Email'),
+                          validator: (input) => !input.contains('@') ? 'Please enter a valid email': null,
                           onSaved: (input) => _email = input,
                         ),
                       ),
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(   //Login button container
                         width: 250.0,
                         child: FlatButton(    // Login button
-                          onPressed:_submit,
+                          onPressed:submit,
                           color: Colors.lightBlue,
                           padding: EdgeInsets.all(10.0),
                           child: Text('Login',
