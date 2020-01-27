@@ -2,6 +2,7 @@ import 'package:carappsl/Screens/activity_screen.dart';
 import 'package:carappsl/Screens/create_post_screen.dart';
 import 'package:carappsl/Screens/feed_screen.dart';
 import 'package:carappsl/Screens/profile_screen.dart';
+import 'package:carappsl/Screens/profile_screenN.dart';
 import 'package:carappsl/Screens/search_screen.dart';
 import 'package:carappsl/Screens/test_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +54,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
           SearchScreen(),
           CreatePostScreen(),
           ActivityScreen(),
-          TestScreen(userId: widget.userId),
+          ProfileScreenN(userId: widget.userId),
 
         ],
         onPageChanged: (int index){
