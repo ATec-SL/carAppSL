@@ -7,13 +7,32 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  TextEditingController _searchController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: Center(
-        child: Text(
-            'Search'
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: TextField(
+          controller: _searchController,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+          border: InputBorder.none,
+          hintText: 'Search',
+          prefixIcon: Icon(
+            Icons.search,
+            size: 30.0,
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              Icons.clear
+            ),
+            onPressed: ()=> print('clear'),
+          ),
+        ),
         ),
       ),
 

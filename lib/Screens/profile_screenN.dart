@@ -18,12 +18,14 @@ class ProfileScreenN extends StatefulWidget {
 
 class _ProfileScreenNState extends State<ProfileScreenN> {
 
-  Widget buidCoverImage(Size screenSize){
+  Widget buidCoverImage(Size screenSize, User user){
     return Container(
-      height: screenSize.height /4.5,
+      height: screenSize.height /3.5,
       decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/cover.jpg'),
+            image: user.profileImageUrl.isEmpty
+                ? AssetImage('assets/images/placeHolder.png')
+                : CachedNetworkImageProvider(user.profileImageUrl),
             fit: BoxFit.cover,
           )
       ),
@@ -61,7 +63,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
       height: 60.0,
       margin: EdgeInsets.only(top: 8.0),
       decoration: BoxDecoration(
-        color: Color(0xFFeFF4F),
+//        color: Color(0xFFeFF4F),
 
       ),
 
@@ -147,7 +149,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
             color: Colors.black,
           ),
           children: <TextSpan>[
-            new TextSpan(text: label+ '  : '),
+            new TextSpan(text: label),
             new TextSpan(text: value , style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 18.0)),
 
           ],
@@ -176,21 +178,25 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     );
   }
 
-  Widget qqqq(BuildContext context) {
-    return ExpandablePanel(
-      header: Text("adsdvd"),
-      collapsed: Text("efgvvervvc vfedv ev fevwe e ", softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
-      expanded: Text("sdvfcvc w  w ewfce", softWrap: true, ),
-      tapHeaderToExpand: true,
-      hasIcon: true,
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            'Zonegram',
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Pacifico',
+              fontSize: 35.0,
+            ),
+          ),
+        ),
         backgroundColor: Colors.white,
 
         body: FutureBuilder(
@@ -209,23 +215,24 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
 
               body: Stack(
                 children: <Widget>[
-                buidCoverImage(screenSize,),
               SafeArea(
+
                 child: SingleChildScrollView(
+
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: screenSize.height / 7.4,),
-                      buildProfileImage(user),
+                      buidCoverImage(screenSize, user),
+                      SizedBox(height: screenSize.height / 58.4,),
+
+//                      buildProfileImage(user),
                       buildFullName(user),
                       buildStatContainer(),
-                      vehicleDetails(context, "Mobel / Brand", user.brandModel),
-                      vehicleDetails(context, "Registration No", user.vehiceRegNo),
-                      vehicleDetails(context, "Model Year", user.year),
-                      vehicleDetails(context, "Transmission", user.transmission),
-                      vehicleDetails(context, "Fuel Type", user.fuelType),
-                      vehicleDetails(context, "Model Year", user.year),
-                      vehicleDetails(context, "Transmission", user.transmission),
-                      vehicleDetails(context, "Fuel Type", user.fuelType),
+                      vehicleDetails(context, "Mobel / Brand : ", user.brandModel),
+                      vehicleDetails(context, "Registration No : ", user.vehiceRegNo),
+                      vehicleDetails(context, "Model Year : ", user.year),
+                      vehicleDetails(context, "Transmission : ", user.transmission),
+                      vehicleDetails(context, "Fuel Type : ", user.fuelType),
+                      vehicleDetails(context, "", user.bio),
                       editButton(user)
 
                     ],

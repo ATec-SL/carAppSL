@@ -12,6 +12,19 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Zonegram',
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Pacifico',
+            fontSize: 35.0,
+          ),
+        ),
+      ),
+
       backgroundColor: Colors.blue,
       body: Center(
         child: FlatButton(

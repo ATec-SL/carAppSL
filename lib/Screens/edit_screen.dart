@@ -24,6 +24,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File profileImage;
   String name= '';
   String bio = '';
+  String brandModel = '';
+  String regNo = '';
+  String year = '';
+  String transmission = '';
+  String fuel = '';
+
+
+
   bool isLoading = false;
 
   @override
@@ -31,6 +39,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     name = widget.user.name;
     bio = widget.user.bio;
+    brandModel = widget.user.brandModel;
+    regNo = widget.user.vehiceRegNo;
+    year = widget.user.year;
+    transmission = widget.user.transmission;
+    fuel = widget.user.fuelType;
+
   }
 
   handleImageFromGallery() async {
@@ -94,8 +108,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  Widget buidCoverImage(Size screenSize){
+    return Container(
+      height: screenSize.height /5.0,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            image: displayProfileImage(),
+            fit: BoxFit.cover,
+          )
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
 
       backgroundColor: Colors.white,
@@ -122,11 +149,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Form(key: formKey,
                 child: Column(
                   children: <Widget>[
-                    CircleAvatar(
-                      radius: 60.0,
-                      backgroundColor: Colors.grey,
-                      backgroundImage: displayProfileImage(),
-                    ),
+                    buidCoverImage(screenSize, ),
 
                     FlatButton(
                       onPressed: handleImageFromGallery,
