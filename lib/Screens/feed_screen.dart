@@ -1,5 +1,10 @@
+
+import 'dart:io';
+
 import 'package:carappsl/Services/auth_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FeedScreen extends StatefulWidget {
   static final String id = 'feed_screen';
@@ -23,6 +28,12 @@ class _FeedScreenState extends State<FeedScreen> {
             fontSize: 35.0,
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => print(''),
+          )
+        ],
       ),
 
       backgroundColor: Colors.blue,

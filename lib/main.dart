@@ -4,6 +4,9 @@ import 'package:carappsl/Screens/login_screen.dart';
 import 'package:carappsl/Screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:carappsl/models/user_data.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -14,7 +17,8 @@ class MyApp extends StatelessWidget {
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData){
-          return HomeScreeen(userId: snapshot.data.uid);
+          Provider.of<userData>(context).currentUserId = snapshot.data.uid;
+          return HomeScreeen();
         }
         else{
           return LoginScreen();
@@ -27,20 +31,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ZoneGaram',
-      debugShowCheckedModeBanner: false,
+    return ChangeNotifierProvider(
+      builder: (context) => userData() ,
+      child: MaterialApp(
+        title: 'ZoneGaram',
+        debugShowCheckedModeBanner: false,
 
-      theme: ThemeData(primaryIconTheme: Theme.of(context).primaryIconTheme.copyWith(
-        color: Colors.black,
-      )),
+        theme: ThemeData(primaryIconTheme: Theme.of(context).primaryIconTheme.copyWith(
+          color: Colors.black,
+        )),
 
-      home: _getScreenId(), //Navigator
-      routes: {
-        LoginScreen.id: (context) => LoginScreen(),
-        SignupScreen.id: (context) => SignupScreen(),
-        FeedScreen.id: (context) => FeedScreen()
-      },
+        home: _getScreenId(), //Navigator
+        routes: {
+          LoginScreen.id: (context) => LoginScreen(),
+          SignupScreen.id: (context) => SignupScreen(),
+          FeedScreen.id: (context) => FeedScreen()
+        },
+      ),
     );
   }
 }

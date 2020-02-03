@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carappsl/Screens/activity_screen.dart';
 import 'package:carappsl/Screens/create_post_screen.dart';
 import 'package:carappsl/Screens/feed_screen.dart';
@@ -5,15 +7,15 @@ import 'package:carappsl/Screens/profile_screen.dart';
 import 'package:carappsl/Screens/profile_screenN.dart';
 import 'package:carappsl/Screens/search_screen.dart';
 import 'package:carappsl/Screens/test_screen.dart';
+import 'package:carappsl/models/user_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 
 class HomeScreeen extends StatefulWidget {
-  final String userId;
 
-  HomeScreeen({this.userId});
 
   @override
   _HomeScreeenState createState() => _HomeScreeenState();
@@ -43,7 +45,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
           SearchScreen(),
           CreatePostScreen(),
           ActivityScreen(),
-          ProfileScreenN(userId: widget.userId),
+          ProfileScreenN(userId: Provider.of<userData>(context).currentUserId),
 
         ],
         onPageChanged: (int index){

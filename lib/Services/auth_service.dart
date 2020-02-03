@@ -1,8 +1,10 @@
 import 'package:carappsl/Screens/feed_screen.dart';
 import 'package:carappsl/Screens/login_screen.dart';
+import 'package:carappsl/models/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class AuthService{
 
@@ -30,6 +32,7 @@ class AuthService{
 
         });
 
+        Provider.of<userData>(context).currentUserId = signedInUser.uid;
         Navigator.pop(context);
       }
     }

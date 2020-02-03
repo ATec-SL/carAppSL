@@ -139,7 +139,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
 
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
       child: RichText(
         text: new TextSpan(
           // Note: Styles for TextSpans must be explicitly defined.
@@ -239,10 +239,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
                   ),
                 ),
               ),
-
-
                 ],
-
               ),
             );
           },
