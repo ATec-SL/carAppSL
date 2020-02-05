@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carappsl/Screens/profile_screenN.dart';
 import 'package:carappsl/Services/database_service.dart';
+import 'package:carappsl/models/user_data.dart';
 import 'package:carappsl/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class SearchScreen extends StatefulWidget {
@@ -28,8 +30,10 @@ class _SearchScreenState extends State<SearchScreen> {
       user.name
     ),
     onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreenN(
-
-      userId: user.id,),),
+      currentUserId: Provider.of<userData>(context).currentUserId,
+      userId: user.id,
+    ),
+    ),
     ),
     );
   }

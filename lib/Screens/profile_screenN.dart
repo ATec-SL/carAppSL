@@ -1,3 +1,5 @@
+import 'package:carappsl/Services/database_service.dart';
+import 'package:carappsl/models/user_data.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
@@ -5,18 +7,95 @@ import 'package:carappsl/models/user_model.dart';
 import 'package:carappsl/Screens/edit_screen.dart';
 import 'package:carappsl/utilties/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
 
 
 class ProfileScreenN extends StatefulWidget {
 
+  final String currentUserId;
   final String userId;
 
-  ProfileScreenN({this.userId});
+  ProfileScreenN({this.currentUserId, this.userId});
   @override
   _ProfileScreenNState createState() => _ProfileScreenNState();
 }
 
 class _ProfileScreenNState extends State<ProfileScreenN> {
+
+  bool isFollowing = false;
+  int followerCount = 0;
+  int followingCount = 0;
+
+
+  @override
+  void initState(){
+    super.initState();
+    setupIsFollowing();
+    setupFollowers();
+    setupFollowing();
+  }
+
+
+  setupIsFollowing() async{
+    bool isFollowingUser = await DatabaseService.isFollowingUser(
+      currentUserId: widget.currentUserId,
+      userID: widget.userId
+    );
+    setState(() {
+      isFollowing = isFollowingUser;
+    });
+  }
+
+  setupFollowers() async {
+    int userFollowerCount = await DatabaseService.numFollowers(widget.userId);
+    setState(() {
+      followerCount = userFollowerCount;
+    });
+  }
+
+  setupFollowing() async {
+
+    int userFollowingCount = await DatabaseService.numFollowing(widget.userId);
+    setState(() {
+      followingCount = userFollowingCount;
+    });
+  }
+
+
+  followOrUnfollow(){
+
+    if(isFollowing){
+      unFollowerUser();
+    } else{
+      followUser();
+    }
+
+  }
+
+  unFollowerUser(){
+    DatabaseService.unFollowUser(
+      currentUserId: widget.currentUserId,
+      userId: widget.userId
+    );
+
+    setState(() {
+      isFollowing = false;
+      followerCount--;
+    });
+  }
+
+  followUser(){
+    DatabaseService.followUser(
+        currentUserId: widget.currentUserId,
+        userId: widget.userId
+    );
+
+    setState(() {
+      isFollowing = true;
+      followerCount++;
+    });
+  }
+
 
   Widget buidCoverImage(Size screenSize, User user){
     return Container(
@@ -71,8 +150,8 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           buildStatItem("Posts", "220"),
-          buildStatItem("Followers", "220"),
-          buildStatItem("Following", "220")
+          buildStatItem("Followers", followerCount.toString()),
+          buildStatItem("Following", followingCount.toString())
         ],
       ),
     );
@@ -160,7 +239,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
   }
 
   Widget editButton(User user){
-    return  Container(
+    return  user.id == Provider.of<userData>(context).currentUserId ? Container(
       width: 200.0,
       child: FlatButton(
         onPressed: () => Navigator.push(context,
@@ -171,6 +250,18 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
         textColor: Colors.white,
         child: Text(
           'Edit Profile',
+          style: TextStyle(fontSize: 18.0),
+
+        ),
+      ),
+    ) : Container(
+      width: 200.0,
+      child: FlatButton(
+        onPressed: followOrUnfollow,
+        color: isFollowing ? Colors.grey[200] : Colors.blue,
+        textColor: isFollowing ? Colors.black : Colors.white,
+        child: Text(
+          isFollowing ? 'Unfollow' : 'Follow',
           style: TextStyle(fontSize: 18.0),
 
         ),

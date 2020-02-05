@@ -41,10 +41,45 @@ class Year{
 
 }
 
+class FuelType{
+  String fuelT;
+
+  FuelType(this.fuelT);
+
+  static List<FuelType> getFuelType(){
+    return <FuelType>[
+      FuelType('Select Fuel Type'),
+      FuelType('Petrol'),
+      FuelType('Diesel'),
+      FuelType('Electric'),
+      FuelType('Hybrid'),
+      FuelType('Gas'),
+
+    ];
+  }
+
+}
+
+class Transmission{
+  String transmission;
+
+  Transmission(this.transmission);
+
+  static List<Transmission> getTransmissionType(){
+    return <Transmission>[
+      Transmission('Select Transmission Type'),
+      Transmission('Auto'),
+      Transmission('Manual'),
+
+    ];
+  }
+
+}
+
 class _SignupScreenState extends State<SignupScreen> {
 
   final _formKey = GlobalKey<FormState>();
-  String _name, _email, _password, _contactNo, _VRegistrationNo, _BrandModel, _Year ;
+  String _name, _email, _password, _contactNo, _VRegistrationNo, _BrandModel, _Year, _fueltt, _tranmissiont ;
 
 
   //Contact number validation
@@ -60,6 +95,15 @@ class _SignupScreenState extends State<SignupScreen> {
   List<DropdownMenuItem<Year>> _dropdownMenuItemYear;
   Year _selectedYear;
 
+  List<FuelType> _furlT = FuelType.getFuelType();
+  List<DropdownMenuItem<FuelType>> _dropdownMenuItemFuel;
+  FuelType _selectedFuel;
+
+
+  List<Transmission> _transmission = Transmission.getTransmissionType();
+  List<DropdownMenuItem<Transmission>> _dropdownMenuItemTransmission;
+  Transmission _selectedTransmission;
+
   @override
   void initState(){
     _dropdownMenuItem = buildDropDownMenuItem(_brand);
@@ -67,6 +111,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
     _dropdownMenuItemYear = buildDropDownMenuItemYear(_yearS);
     _selectedYear = _dropdownMenuItemYear[0].value;
+
+    _dropdownMenuItemTransmission = buildDropDownMenuItemTransmission(_transmission);
+    _selectedTransmission = _dropdownMenuItemTransmission[0].value;
+
+    _dropdownMenuItemFuel = buildDropDownMenuItemFuelType(_furlT);
+    _selectedFuel = _dropdownMenuItemFuel[0].value;
 
 
     super.initState();
@@ -98,6 +148,32 @@ class _SignupScreenState extends State<SignupScreen> {
     return items;
   }
 
+  List<DropdownMenuItem<FuelType>> buildDropDownMenuItemFuelType(List brands) {
+    List<DropdownMenuItem<FuelType>> items = List();
+    for (FuelType barnd in brands) {
+      items.add(
+        DropdownMenuItem(
+          value: barnd,
+          child: Text(barnd.fuelT),
+        ),
+      );
+    }
+    return items;
+  }
+
+  List<DropdownMenuItem<Transmission>> buildDropDownMenuItemTransmission(List brands) {
+    List<DropdownMenuItem<Transmission>> items = List();
+    for (Transmission barnd in brands) {
+      items.add(
+        DropdownMenuItem(
+          value: barnd,
+          child: Text(barnd.transmission),
+        ),
+      );
+    }
+    return items;
+  }
+
   onChangedDropDownItem(VehicleBrand selectedBrand){
     setState(() {
       _selectedBrand = selectedBrand;
@@ -112,8 +188,20 @@ class _SignupScreenState extends State<SignupScreen> {
       _selectedYear = selectedYear;
       _Year= _selectedYear.year;
     });
+  }
 
+  onChangedDropDownItemFuel(FuelType selectedFuel){
+    setState(() {
+      _selectedFuel = selectedFuel;
+      _fueltt= selectedFuel.fuelT;
+    });
+  }
 
+  onChangedDropDownItemTransmission(Transmission selectedTransmission){
+    setState(() {
+      _selectedTransmission = selectedTransmission;
+      _tranmissiont= selectedTransmission.transmission;
+    });
   }
 
   //***********Vehicle Brand List
@@ -124,7 +212,7 @@ class _SignupScreenState extends State<SignupScreen> {
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
       //Login the user with firebase using the services
-      AuthService.signUpUser(context, _name, _email, _password, _contactNo, _VRegistrationNo, _BrandModel, _Year);
+      AuthService.signUpUser(context, _name, _email, _password, _contactNo, _VRegistrationNo, _BrandModel, _Year, _fueltt, _tranmissiont);
     }
   }
 
@@ -133,17 +221,24 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold( //Ceneter everything
 
         body: SingleChildScrollView(
+
           child: Container(
-            height: MediaQuery.of(context).size.height * 1.6,
-            child: Column(  //Create a column child in cscaffold
+
+//            height: MediaQuery.of(context).size.height * 1.6,
+            child: Column(//Create a column child in cscaffold
+
               mainAxisAlignment: MainAxisAlignment.center,  //To center the title
               crossAxisAlignment: CrossAxisAlignment.center,  //To center the title'
               children: <Widget>[    //Inside this widget we do all the login screen design
 
-                CircleAvatar(   //Add app logo
-                    radius: 50.0,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage('assets/images/logotemp.png')
+                Padding(
+                  padding: const EdgeInsets.only(top: 80.0),
+                  child: CircleAvatar(   //Add app logo
+
+                      radius: 50.0,
+                      backgroundColor: Colors.grey,
+                      backgroundImage: AssetImage('assets/images/logotemp.png')
+                  ),
                 ),
 
                 Text('ZoneGram',
@@ -217,6 +312,29 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
 
+
+                      Padding( //Vehicle year
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),   //Add padding around text field
+                        child: DropdownButtonFormField(
+                          decoration: InputDecoration(labelText: 'Fuel Type'),
+                          value: _selectedFuel,
+                          items: _dropdownMenuItemFuel,
+                          onChanged: onChangedDropDownItemFuel,
+
+                        ),
+                      ),
+
+                      Padding( //Vehicle year
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),   //Add padding around text field
+                        child: DropdownButtonFormField(
+                          decoration: InputDecoration(labelText: 'Transmission'),
+                          value: _selectedTransmission,
+                          items: _dropdownMenuItemTransmission,
+                          onChanged: onChangedDropDownItemTransmission,
+
+                        ),
+                      ),
+
                       Padding( //Password
                         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),   //Add padding around text field
                         child: TextFormField(    // Input label email
@@ -242,14 +360,17 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       SizedBox(height: 20.0),
 
-                      Container(   //Sign up button container
-                        width: 250.0,
-                        child: FlatButton(    // Login button
-                          onPressed: () => Navigator.pop(context),
-                          color: Colors.lightBlue,
-                          padding: EdgeInsets.all(10.0),
-                          child: Text('Back To Login',
-                            style: TextStyle(color: Colors.white, fontSize: 18.0),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: Container(   //Sign up button container
+                          width: 250.0,
+                          child: FlatButton(    // Login button
+                            onPressed: () => Navigator.pop(context),
+                            color: Colors.lightBlue,
+                            padding: EdgeInsets.all(10.0),
+                            child: Text('Back To Login',
+                              style: TextStyle(color: Colors.white, fontSize: 18.0),
+                            ),
                           ),
                         ),
                       )
