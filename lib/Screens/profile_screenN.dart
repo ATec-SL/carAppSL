@@ -1,4 +1,5 @@
 import 'package:carappsl/Services/database_service.dart';
+import 'package:carappsl/models/post_model.dart';
 import 'package:carappsl/models/user_data.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,9 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
   int followerCount = 0;
   int followingCount = 0;
 
+  List<Post> _posts = [];
+  int displayPosts = 0; //0- grid, 1- column
+
 
   @override
   void initState(){
@@ -33,7 +37,15 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     setupIsFollowing();
     setupFollowers();
     setupFollowing();
+    setupPosts();
   }
+
+  setupPosts() async {
+    List<Post> posts = await DatabaseService.getUserPosts(widget.userId);
+    setState(() {
+      _posts = posts;
+    });
+}
 
 
   setupIsFollowing() async{
@@ -149,7 +161,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          buildStatItem("Posts", "220"),
+          buildStatItem("Posts", _posts.length.toString()),
           buildStatItem("Followers", followerCount.toString()),
           buildStatItem("Following", followingCount.toString())
         ],
@@ -269,6 +281,32 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     );
   }
 
+  buildToggleButtons(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.grid_on),
+          iconSize: 30.0,
+            color: displayPosts == 0 ? Theme.of(context).primaryColor : Colors.grey[300],
+          onPressed: () => setState(() {
+            displayPosts = 0;
+          }),
+        ),
+
+        IconButton(
+          icon: Icon(Icons.list),
+          iconSize: 30.0,
+          color: displayPosts == 1 ? Theme.of(context).primaryColor : Colors.grey[300],
+          onPressed: () => setState(() {
+            displayPosts = 1;
+          }),
+        )
+      ],
+    );
+  }
+
+
 
 
   @override
@@ -324,7 +362,11 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
                       vehicleDetails(context, "Transmission : ", user.transmission),
                       vehicleDetails(context, "Fuel Type : ", user.fuelType),
                       vehicleDetails(context, "", user.bio),
-                      editButton(user)
+                      editButton(user),
+                      buildToggleButtons(),
+                      Divider(),
+
+
 
                     ],
                   ),

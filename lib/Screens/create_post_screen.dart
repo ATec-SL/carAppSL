@@ -108,7 +108,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
 
       //Create post
-      String imageUrl = await StorageService. uploadPost(image);
+      String imageUrl = await StorageService.uploadPost(image);
       Post post = Post(
         imageUrl: imageUrl,
         caption: caption,

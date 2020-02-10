@@ -9,4 +9,6 @@ final usersRef = firestore.collection('users');
 final postRef = firestore.collection('posts');
 final followingRef = firestore.collection('following');
 final followersRef = firestore.collection('followers');
+final feedRef = firestore.collection('feeds');
+
 
