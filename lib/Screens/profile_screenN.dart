@@ -1,6 +1,8 @@
+import 'package:carappsl/Services/auth_service.dart';
 import 'package:carappsl/Services/database_service.dart';
 import 'package:carappsl/models/post_model.dart';
 import 'package:carappsl/models/user_data.dart';
+import 'package:carappsl/widget/post_view.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
@@ -29,6 +31,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
 
   List<Post> _posts = [];
   int displayPosts = 0; //0- grid, 1- column
+  User _profileUser;
 
 
   @override
@@ -38,6 +41,14 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     setupFollowers();
     setupFollowing();
     setupPosts();
+    setUpProfileUser();
+  }
+
+  setUpProfileUser() async{
+    User profileUser = await DatabaseService.getUserWithId(widget.userId);
+    setState(() {
+      _profileUser = profileUser;
+    });
   }
 
   setupPosts() async {
@@ -306,8 +317,50 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     );
   }
 
+  buildTilePost(Post post){
+    return GridTile(
+      child: Image(
+        image: CachedNetworkImageProvider(post.imageUrl),
+        fit: BoxFit.cover,
+      ),
+    );
+  }
 
+  buildDisplayPosts(){
+    if(displayPosts == 0){
+      //grid
 
+      List<GridTile> tiles = [];
+
+      _posts.forEach(
+          (post) => tiles.add(buildTilePost(post)),
+      );
+      return GridView.count(crossAxisCount: 3,
+      childAspectRatio: 1.0,
+          mainAxisSpacing: 2.0,
+          crossAxisSpacing: 2.0,
+          shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        children: tiles,
+      );
+    }else{
+      //column
+      List<PostView> postView = [];
+      _posts.forEach((post) {
+        postView.add(
+            PostView(
+              currentUserId: widget.currentUserId,
+              post: post,
+              author: _profileUser,
+            ),
+        );
+      });
+
+      return Column(
+        children: postView,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -325,6 +378,14 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
               fontSize: 35.0,
             ),
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.exit_to_app
+              ),
+              onPressed: AuthService.logout,
+            )
+          ],
         ),
         backgroundColor: Colors.white,
 
@@ -365,6 +426,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
                       editButton(user),
                       buildToggleButtons(),
                       Divider(),
+                      buildDisplayPosts(),
 
 
 

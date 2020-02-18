@@ -22,10 +22,10 @@ class DatabaseService {
 
   static void createPost(Post post){
 
-    postRef.document(post.authorId).collection('usersPosts').add({
+    postRef.document(post.authorId).collection('userPosts').add({
       'imageUrl': post.imageUrl,
       'caption': post.caption,
-      'likes': post.likes,
+      'likeCount': post.likeCOunt,
       'authorId': post.authorId,
       'timestamp': post.timestamp,
     }
@@ -119,7 +119,7 @@ class DatabaseService {
   static Future<List<Post>>  getUserPosts(String userId) async{
     QuerySnapshot userPostsSnapshot = await postRef
         .document(userId)
-        .collection('usersPosts')
+        .collection('userPosts')
         .orderBy('timestamp', descending: true)
         .getDocuments();
 
@@ -135,6 +135,63 @@ class DatabaseService {
     }
 
     return User();
+  }
+
+  static void likePost({String currentUserId, Post post}){
+
+    DocumentReference postsRef = postRef.document(post.authorId).collection('userPosts').document(post.id);
+
+    postsRef.get().then((doc) {
+
+      int likeCount = doc.data['likeCount'];
+      postsRef.updateData(({'likeCount': likeCount + 1}));
+      likesRef
+      .document(post.id)
+      .collection('postLikes')
+      .document(currentUserId)
+      .setData({});
+    });
+  }
+
+  static void unLikePost({String currentUserId, Post post}){
+    DocumentReference postsRef = postRef
+        .document(post.authorId)
+        .collection('userPosts')
+        .document(post.id);
+
+        postsRef.get().then((doc) {
+          int likeCOunt = doc.data['likeCount'];
+          postsRef.updateData({'likeCount' : likeCOunt - 1});
+
+          likesRef
+              .document(post.id)
+              .collection('postLikes')
+              .document(currentUserId)
+              .get()
+          .then((doc) {if(doc.exists) {
+            doc.reference.delete();
+          }});
+        });
+
+
+  }
+
+  static Future<bool> didLikePost({String currentUserId, Post post}) async {
+    DocumentSnapshot userDoc = await likesRef
+    .document(post.id)
+        .collection('postLikes')
+        .document(currentUserId)
+        .get();
+    return userDoc.exists;
+
+  }
+
+  static void commentOnPost({String currentUserId, String postId, String comment}){
+    commentRef.document(postId).collection('postComments').add({
+      'content': comment,
+      'authorId': currentUserId,
+      'timestamp': Timestamp.fromDate(DateTime.now()),
+    });
   }
 
 

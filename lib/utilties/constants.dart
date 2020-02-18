@@ -10,5 +10,7 @@ final postRef = firestore.collection('posts');
 final followingRef = firestore.collection('following');
 final followersRef = firestore.collection('followers');
 final feedRef = firestore.collection('feeds');
+final likesRef = firestore.collection('likes');
+final commentRef = firestore.collection('comments');
 
 

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      builder: (context) => userData() ,
+      create: (context) => userData() ,
       child: MaterialApp(
         title: 'ZoneGaram',
         debugShowCheckedModeBanner: false,
