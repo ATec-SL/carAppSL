@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animator/animator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carappsl/Screens/comments_screen.dart';
 import 'package:carappsl/Screens/profile_screenN.dart';
 import 'package:carappsl/Services/database_service.dart';
 import 'package:carappsl/models/post_model.dart';
@@ -179,7 +180,14 @@ class _PostViewState extends State<PostView>{
                   IconButton(
                     icon: Icon(Icons.comment),
                     iconSize: 30.0,
-                    onPressed: () {},
+                    onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(
+                      builder: (_) => CommentScreen(
+                        postId: widget.post.id,
+                        likeCount: _likeCount,
+                      )
+
+                    )),
                   )
                 ],
               ),

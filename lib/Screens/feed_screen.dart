@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carappsl/Screens/chat_screen.dart';
 import 'package:carappsl/Screens/profile_screenN.dart';
 import 'package:carappsl/Services/auth_service.dart';
 import 'package:carappsl/Services/database_service.dart';
@@ -61,8 +62,13 @@ class _FeedScreenState extends State<FeedScreen> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => print(''),
+            icon: Icon(
+                Icons.chat_bubble_outline
+            ),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (_) => Chat()
+                )),
           )
         ],
       ),

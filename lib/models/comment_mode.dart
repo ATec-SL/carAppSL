@@ -4,7 +4,7 @@ class Comment {
   final String id;
   final String content;
   final String authorId;
-  final String timestamp;
+  final Timestamp timestamp;
 
 
   Comment({

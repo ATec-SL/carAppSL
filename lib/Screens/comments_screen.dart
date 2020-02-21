@@ -48,8 +48,8 @@ class _CommentScreenState extends State<CommentScreen> {
             children: <Widget>[
               Text(comment.content),
               SizedBox(height: 6.0,),
-//        *******************      Text(
-////                DateFormat.yMd().add_jm().format(comment.timestamp.toDate()),
+//             Text(
+//                DateFormat.yMd().add_jm().format(comment.timestamp.toDate()),
 //              ),
             ],
           ),

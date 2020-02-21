@@ -12,6 +12,8 @@ import 'package:carappsl/utilties/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
+import 'comments_screen.dart';
+
 
 class ProfileScreenN extends StatefulWidget {
 
@@ -319,9 +321,21 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
 
   buildTilePost(Post post){
     return GridTile(
-      child: Image(
-        image: CachedNetworkImageProvider(post.imageUrl),
-        fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => CommentScreen(
+                  postId: post.id,
+                  likeCount: post.likeCOunt,
+                ),
+
+            ),
+        ),
+        child: Image(
+          image: CachedNetworkImageProvider(post.imageUrl),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
