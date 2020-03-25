@@ -38,20 +38,21 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Hero(
-          tag: 'logo',
-          child: Container(
-            height: 40.0,
-            child: Image.asset("assets/images/logotemp.png"),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            'Zonegram',
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Pacifico',
+              fontSize: 35.0,
+            ),
           ),
-        ),
-        title: Text("Tensor Chat"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-              _auth.signOut();
-              Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.pop(context);
             },
           )
         ],
