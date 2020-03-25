@@ -67,7 +67,7 @@ class _FeedScreenState extends State<FeedScreen> {
             ),
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(
-                    builder: (_) => Chat()
+                    builder: (_) => ChatScreen()
                 )),
           )
         ],
