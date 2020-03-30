@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:carappsl/utilties/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
@@ -131,7 +132,7 @@ class FirebaseProvider {
     }
     // fetchSearchPosts(updatedList);
     print("UPDATED LIST LENGTH : ${updatedList.length}");
-    return updatedList;
+    return list;
   }
 
   Future<List<String>> fetchAllUserNames(FirebaseUser user) async {

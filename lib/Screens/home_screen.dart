@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:carappsl/Screens/activity_screen.dart';
 import 'package:carappsl/Screens/create_post_screen.dart';
 import 'package:carappsl/Screens/feed_screen.dart';
+import 'package:carappsl/Screens/insta_search_screen.dart';
 import 'package:carappsl/Screens/profile_screen.dart';
 import 'package:carappsl/Screens/profile_screenN.dart';
 import 'package:carappsl/Screens/search_screen.dart';
@@ -45,7 +46,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
           FeedScreen(currentUserId: currentUserId,),
           SearchScreen(),
           CreatePostScreen(),
-          ActivityScreen(),
+          InstaSearchScreen(),
           ProfileScreenN(currentUserId: currentUserId, userId: currentUserId ),
 
         ],
