@@ -6,6 +6,7 @@ class User{
    String profileImageUrl;
    String email;
    String bio, brandModel,vehiceRegNo, year, transmission, fuelType;
+   bool sellVehicle;
 
   User({
     this.id,
@@ -18,6 +19,7 @@ class User{
     this.year,
     this.transmission,
     this.fuelType,
+    this.sellVehicle,
   });
 
   factory User.fromDoc(DocumentSnapshot doc){
@@ -33,6 +35,7 @@ class User{
       year: doc['year'],
       transmission: doc['transmission'],
       fuelType: doc['fuelType'],
+      sellVehicle: doc['sellVehicle'],
 
 
     );

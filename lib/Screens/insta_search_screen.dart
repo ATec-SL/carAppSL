@@ -1,18 +1,13 @@
-import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carappsl/Services/database_service.dart';
+import 'package:carappsl/Screens/AdCard.dart';
 import 'package:carappsl/models/post_model.dart';
-import 'package:carappsl/models/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carappsl/models/user_model.dart';
 import 'package:carappsl/resources/repository.dart';
-//import 'package:carappsl/ui/insta_friend_profile_screen.dart';
-import 'package:carappsl/Screens/profile_screenN.dart';
-import 'package:carappsl/widget/post_view.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+
 
 class InstaSearchScreen extends StatefulWidget {
   @override
@@ -41,7 +36,7 @@ class _InstaSearchScreenState extends State<InstaSearchScreen> {
         });
       });
       print("USER : ${user.displayName}");
-      _repository.retrievePosts(user).then((updatedList) {
+      _repository.retrieveSellingVehicles(user).then((updatedList) {
         setState(() {
           list = updatedList;
         });
@@ -54,13 +49,7 @@ class _InstaSearchScreenState extends State<InstaSearchScreen> {
     });
   }
 
-  setUpFeed() async {
-    List<Post> posts = await DatabaseService.getFeedPosts(currentUser.id);
 
-    setState(() {
-      _posts = posts;
-    });
-  }
 
 
   @override
@@ -69,113 +58,32 @@ class _InstaSearchScreenState extends State<InstaSearchScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Search'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              showSearch(context: context, delegate: DataSearch(userList: usersList, user: _user));
-            },
-          )
-        ],
+        centerTitle: true,
+        title: Text(
+          'Vehicle Selling',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+
       ),
-      body: GridView.builder(
-          //  shrinkWrap: true,
-          itemCount: list.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
-          itemBuilder: ((context, index) {
-            print("LIST : ${list.length}");
-            return GestureDetector(
-              child: CachedNetworkImage(
-                imageUrl: list[index].data['profileImageUrl'],
+      body: FutureBuilder(
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
 
-                placeholder: ((context, s) => Center(
-                      child: CircularProgressIndicator(),
-                    )),
-                width: 125.0,
-                height: 125.0,
-                fit: BoxFit.cover,
-              ),
-              onTap: () {
-                print("SNAPSHOT : ${list[index].reference.path}");
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => ProfileScreenN(
-                          currentUserId: Provider.of<userData>(context).currentUserId,
-                          userId: list[index].documentID,
-                        ))));
-              },
-            );
-          })),
-    );
-  }
-}
-
-class DataSearch extends SearchDelegate<String> {
-
-   List<User> userList;
-   User user;
-   DataSearch({this.userList, this.user});
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = "";
-        },
-      )
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,
-      ),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return null;
-   // return Center(child: Container(width: 50.0, height: 50.0, color: Colors.red, child: Text(query),));
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-
-    final suggestionsList = query.isEmpty
-        ? userList
-        : userList.where((p) => p.name.startsWith(query)).toList();
-    return ListView.builder(
-      itemCount: suggestionsList.length,
-      itemBuilder: ((context, index) => ListTile(
-            onTap: () {
-
-
-              //   showResults(context);
-              Navigator.push(context, MaterialPageRoute(
-                builder: ((context) => ProfileScreenN(
-                  currentUserId: Provider.of<userData>(context).currentUserId,
-                  userId: userList[index].id,
-                ))
-              ));
-
+          return  StaggeredGridView.countBuilder(
+            crossAxisCount: 4,
+            itemCount: list.length,
+            itemBuilder: (BuildContext context, int index) {
+              return AdCard(list[index].data, context, list[index].documentID);
             },
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(suggestionsList[index].profileImageUrl),
-            ),
-            title: Text(suggestionsList[index].name),
-          )),
+            staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
+          );
+
+        }
+
+      ),
     );
   }
 }

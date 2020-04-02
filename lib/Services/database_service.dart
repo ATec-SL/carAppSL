@@ -2,7 +2,6 @@ import 'package:carappsl/models/post_model.dart';
 import 'package:carappsl/models/user_model.dart';
 import 'package:carappsl/utilties/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class DatabaseService {
   static void updateUser(User user){
@@ -10,6 +9,7 @@ class DatabaseService {
       'name': user.name,
       'profileImageUrl': user.profileImageUrl,
       'bio': user.bio,
+      'sellVehicle': user.sellVehicle
 
     });
   }

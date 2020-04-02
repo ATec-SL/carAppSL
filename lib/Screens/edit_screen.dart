@@ -29,6 +29,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String year = '';
   String transmission = '';
   String fuel = '';
+  bool sellVehicle;
 
 
 
@@ -44,6 +45,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     year = widget.user.year;
     transmission = widget.user.transmission;
     fuel = widget.user.fuelType;
+    sellVehicle = widget.user.sellVehicle;
+    if(widget.user.sellVehicle == null){
+      sellVehicle = false;
+    }
 
   }
 
@@ -98,7 +103,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           id: widget.user.id,
           name: name,
           profileImageUrl: profileImageUrl,
-          bio: bio
+          bio: bio,
+        sellVehicle: sellVehicle,
       );
 
       //Database Update
@@ -187,6 +193,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       validator: (input) => input.trim().length > 150 ? 'Please enter a bio less than 150 characters' : null,
                       onSaved:(input) => bio = input ,
                     ),
+
+
+                    SizedBox(height: 20.0),
+                  new Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        new  Text(
+                          'Sell this Car',
+                          style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
+                        new Switch(
+
+                          value: sellVehicle,
+                          onChanged: (value) {
+                            setState(() {
+                              sellVehicle = value;
+                              print(sellVehicle);
+                            });
+                          },
+
+                          activeTrackColor: Colors.lightBlue,
+                          activeColor: Colors.blue,
+                        ),
+                      ]
+                  ),
+
                     Container(
                       margin: EdgeInsets.all(40.0),
                       height: 40.0, width: 250.0, child: FlatButton(

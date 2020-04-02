@@ -33,6 +33,8 @@ class Repository {
 
    Future<List<DocumentSnapshot>> retrievePosts(FirebaseUser user) => _firebaseProvider.retrievePosts(user);
 
+  Future<List<DocumentSnapshot>> retrieveSellingVehicles(FirebaseUser user) => _firebaseProvider.retrieveSellingVehicles(user);
+
   Future<List<String>> fetchAllUserNames(FirebaseUser user) => _firebaseProvider.fetchAllUserNames(user);
 
   Future<String> fetchUidBySearchedName(String name) => _firebaseProvider.fetchUidBySearchedName(name);

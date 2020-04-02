@@ -1,13 +1,10 @@
 import 'dart:async';
 
-import 'package:carappsl/Screens/activity_screen.dart';
 import 'package:carappsl/Screens/create_post_screen.dart';
 import 'package:carappsl/Screens/feed_screen.dart';
 import 'package:carappsl/Screens/insta_search_screen.dart';
-import 'package:carappsl/Screens/profile_screen.dart';
 import 'package:carappsl/Screens/profile_screenN.dart';
 import 'package:carappsl/Screens/search_screen.dart';
-import 'package:carappsl/Screens/test_screen.dart';
 import 'package:carappsl/models/user_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +88,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
           ),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.notifications,
+                Icons.directions_car,
                 size: 32.0,
               )
           ),

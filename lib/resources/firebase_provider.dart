@@ -113,26 +113,48 @@ class FirebaseProvider {
   }
 
   Future<List<DocumentSnapshot>> retrievePosts(FirebaseUser user) async {
+
+    final QuerySnapshot result =
+    await Firestore.instance.collection('userPosts').getDocuments();
+    final List<DocumentSnapshot> documents = result.documents;
+
+
     List<DocumentSnapshot> list = List<DocumentSnapshot>();
     List<DocumentSnapshot> updatedList = List<DocumentSnapshot>();
     QuerySnapshot querySnapshot;
     QuerySnapshot snapshot =
-        await _firestore.collection("users").getDocuments();
+        await _firestore.collection("posts").document('nMFtYCaSs8ZTpgp5eKaA35ppa6x1')
+        .collection('userPosts')
+        .orderBy('timestamp', descending: true)
+        .getDocuments();
+
     for (int i = 0; i < snapshot.documents.length; i++) {
       if (snapshot.documents[i].documentID != user.uid) {
         list.add(snapshot.documents[i]);
       }
     }
-    for (var i = 0; i < list.length; i++) {
-      querySnapshot =
-          await list[i].reference.collection("posts").getDocuments();
-      for (var i = 0; i < querySnapshot.documents.length; i++) {
-        updatedList.add(querySnapshot.documents[i]);
-      }
-    }
-    // fetchSearchPosts(updatedList);
     print("UPDATED LIST LENGTH : ${updatedList.length}");
     return list;
+  }
+
+
+  Future<List<DocumentSnapshot>> retrieveSellingVehicles(FirebaseUser user) async {
+    List<DocumentSnapshot> list = List<DocumentSnapshot>();
+    List<DocumentSnapshot> updatedList = List<DocumentSnapshot>();
+    QuerySnapshot querySnapshot;
+    QuerySnapshot snapshot =
+    await _firestore.collection("users").getDocuments();
+    for (int i = 0; i < snapshot.documents.length; i++) {
+      if (snapshot.documents[i].documentID != user.uid && snapshot.documents[i].data['sellVehicle'] == true) {
+        updatedList.add(snapshot.documents[i]);
+      }
+    }
+
+
+
+    // fetchSearchPosts(updatedList);
+    print("UPDATED LIST LENGTH : ${updatedList.length}");
+    return updatedList;
   }
 
   Future<List<String>> fetchAllUserNames(FirebaseUser user) async {
