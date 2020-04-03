@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:carappsl/Screens/create_post_screen.dart';
 import 'package:carappsl/Screens/feed_screen.dart';
-import 'package:carappsl/Screens/insta_search_screen.dart';
+import 'package:carappsl/Screens/vehicle_selling.dart';
 import 'package:carappsl/Screens/profile_screenN.dart';
 import 'package:carappsl/Screens/search_screen.dart';
 import 'package:carappsl/models/user_data.dart';
@@ -43,7 +43,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
           FeedScreen(currentUserId: currentUserId,),
           SearchScreen(),
           CreatePostScreen(),
-          InstaSearchScreen(),
+          VehicleSellingScreen(),
           ProfileScreenN(currentUserId: currentUserId, userId: currentUserId ),
 
         ],

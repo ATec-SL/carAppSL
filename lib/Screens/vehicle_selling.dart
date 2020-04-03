@@ -9,12 +9,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 
 
-class InstaSearchScreen extends StatefulWidget {
+class VehicleSellingScreen extends StatefulWidget {
   @override
-  _InstaSearchScreenState createState() => _InstaSearchScreenState();
+  _VehicleSellingScreenState createState() => _VehicleSellingScreenState();
 }
 
-class _InstaSearchScreenState extends State<InstaSearchScreen> {
+class _VehicleSellingScreenState extends State<VehicleSellingScreen> {
   var _repository = Repository();
   List<DocumentSnapshot> list = List<DocumentSnapshot>();
   User _user = User();
