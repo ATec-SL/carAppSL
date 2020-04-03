@@ -123,17 +123,16 @@ class FirebaseProvider {
     List<DocumentSnapshot> updatedList = List<DocumentSnapshot>();
     QuerySnapshot querySnapshot;
     QuerySnapshot snapshot =
-        await _firestore.collection("posts").document('nMFtYCaSs8ZTpgp5eKaA35ppa6x1')
-        .collection('userPosts')
-        .orderBy('timestamp', descending: true)
+        await _firestore.collectionGroup("userPosts")
+//        .orderBy('timestamp', descending: true)
         .getDocuments();
 
+
     for (int i = 0; i < snapshot.documents.length; i++) {
-      if (snapshot.documents[i].documentID != user.uid) {
+      if (snapshot.documents[i].data['authorId'] != user.uid) {
         list.add(snapshot.documents[i]);
       }
     }
-    print("UPDATED LIST LENGTH : ${updatedList.length}");
     return list;
   }
 
