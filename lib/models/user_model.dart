@@ -5,7 +5,7 @@ class User{
    String name;
    String profileImageUrl;
    String email;
-   String bio, brandModel,vehiceRegNo, year, transmission, fuelType, carBrand;
+   String bio, brandModel,vehiceRegNo, year, transmission, fuelType, carBrand, model;
    bool sellVehicle;
 
   User({
@@ -21,6 +21,7 @@ class User{
     this.fuelType,
     this.sellVehicle,
     this.carBrand,
+    this.model,
   });
 
   factory User.fromDoc(DocumentSnapshot doc){
@@ -38,6 +39,7 @@ class User{
       fuelType: doc['fuelType'],
       sellVehicle: doc['sellVehicle'],
       carBrand: doc['carBrand'],
+      model: doc['model']
 
 
     );

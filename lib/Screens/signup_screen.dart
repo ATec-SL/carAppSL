@@ -112,6 +112,8 @@ class _SignupScreenState extends State<SignupScreen> {
    List<String> _carBrands = [];
 
   String _currentcarBrands;
+  String _currentcarModel;
+
 
   @override
   void initState(){
@@ -166,6 +168,19 @@ class _SignupScreenState extends State<SignupScreen> {
     return items;
   }
 
+  List<DropdownMenuItem<String>> modelsCar(List brands) {
+    List<DropdownMenuItem<String>> items = List();
+    for (String barnd in brands) {
+      items.add(
+        DropdownMenuItem(
+          value: barnd,
+          child: Text(barnd),
+        ),
+      );
+    }
+    return items;
+  }
+
 
   onChangedDropDownItemYear(Year selectedYear){
     setState(() {
@@ -195,8 +210,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
+      _BrandModel = _currentcarBrands+" "+_currentcarModel;
       //Login the user with firebase using the services
-      AuthService.signUpUser(context, _name, _email, _password, _contactNo, _VRegistrationNo, _BrandModel, _Year, _fueltt, _tranmissiont, _currentcarBrands);
+      AuthService.signUpUser(context, _name, _email, _password, _contactNo, _VRegistrationNo, _BrandModel, _Year, _fueltt, _tranmissiont, _currentcarBrands, _currentcarModel);
     }
   }
 
@@ -304,15 +320,61 @@ class _SignupScreenState extends State<SignupScreen> {
                             value: _currentcarBrands,
                             items: brandd,
                             onChanged: (ss){
-
+                              FocusScope.of(context).requestFocus(FocusNode());
                               setState(() {
                                 _currentcarBrands = ss;
                               });
+
+
                             },
                             isExpanded: false,
 
                           ),
                             );
+                          }
+                          return null;
+                        },
+                      ),
+
+                      StreamBuilder<QuerySnapshot>(
+
+                        stream: Firestore.instance.collection('cartypes').snapshots(),
+                        builder: (context, snapshot){
+                          if(!snapshot.hasData){
+                            Text('Loading');
+                          }
+                          else{
+                            List<String> modelsT=[];
+                            for(int i=0;i<snapshot.data.documents.length;i++){
+                              DocumentSnapshot snap = snapshot.data.documents[i];
+                              
+                              if(snap.documentID == _currentcarBrands){
+                                var ss = snap.data['models'];
+                                modelsT = ss.toString().split(",").map((x) => x.trim()).toList();
+
+                              }
+
+                            }
+
+                            if(modelsT != null){
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),   //Add padding around text field
+                                child: DropdownButtonFormField(
+                                  decoration: InputDecoration(labelText: 'Model'),
+                                  // ignore: missing_return, missing_return, missing_return, missing_return, missing_return, missing_return, missing_return, missing_return
+                                  value: _currentcarModel,
+                                  items: modelsCar(modelsT),
+                                  onChanged: (ss){
+                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    setState(() {
+                                      _currentcarModel = ss;
+                                    });
+                                  },
+                                  isExpanded: false,
+
+                                ),
+                              );
+                            }
                           }
                           return null;
                         },
