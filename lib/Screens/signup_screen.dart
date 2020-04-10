@@ -1,5 +1,9 @@
+import 'package:carappsl/Screens/test_screen.dart';
 import 'package:carappsl/Services/auth_service.dart';
+import 'package:carappsl/Services/database_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:getflutter/getflutter.dart';
 
 class SignupScreen extends StatefulWidget {
 
@@ -104,11 +108,13 @@ class _SignupScreenState extends State<SignupScreen> {
   List<DropdownMenuItem<Transmission>> _dropdownMenuItemTransmission;
   Transmission _selectedTransmission;
 
+//  final List<String> carBrands = ['dgfdg','dgdfg'];
+   List<String> _carBrands = [];
+
+  String _currentcarBrands;
+
   @override
   void initState(){
-    _dropdownMenuItem = buildDropDownMenuItem(_brand);
-    _selectedBrand = _dropdownMenuItem[0].value;
-
     _dropdownMenuItemYear = buildDropDownMenuItemYear(_yearS);
     _selectedYear = _dropdownMenuItemYear[0].value;
 
@@ -118,21 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
     _dropdownMenuItemFuel = buildDropDownMenuItemFuelType(_furlT);
     _selectedFuel = _dropdownMenuItemFuel[0].value;
 
-
     super.initState();
-  }
-
-  List<DropdownMenuItem<VehicleBrand>> buildDropDownMenuItem(List brands) {
-    List<DropdownMenuItem<VehicleBrand>> items = List();
-    for (VehicleBrand barnd in brands) {
-      items.add(
-        DropdownMenuItem(
-          value: barnd,
-          child: Text(barnd.barnd),
-        ),
-      );
-    }
-    return items;
   }
 
   List<DropdownMenuItem<Year>> buildDropDownMenuItemYear(List brands) {
@@ -174,14 +166,6 @@ class _SignupScreenState extends State<SignupScreen> {
     return items;
   }
 
-  onChangedDropDownItem(VehicleBrand selectedBrand){
-    setState(() {
-      _selectedBrand = selectedBrand;
-      _BrandModel = _selectedBrand.barnd;
-    });
-
-
-  }
 
   onChangedDropDownItemYear(Year selectedYear){
     setState(() {
@@ -212,7 +196,7 @@ class _SignupScreenState extends State<SignupScreen> {
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
       //Login the user with firebase using the services
-      AuthService.signUpUser(context, _name, _email, _password, _contactNo, _VRegistrationNo, _BrandModel, _Year, _fueltt, _tranmissiont);
+      AuthService.signUpUser(context, _name, _email, _password, _contactNo, _VRegistrationNo, _BrandModel, _Year, _fueltt, _tranmissiont, _currentcarBrands);
     }
   }
 
@@ -233,18 +217,18 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 Padding(
                   padding: const EdgeInsets.only(top: 80.0),
-                  child: CircleAvatar(   //Add app logo
-
+                  child: GFAvatar(  //Add app logo
                       radius: 50.0,
                       backgroundColor: Colors.grey,
-                      backgroundImage: AssetImage('assets/images/logotemp.png')
+                      backgroundImage: AssetImage('assets/images/logo.png'),
+                      shape: GFAvatarShape.square
                   ),
                 ),
 
-                Text('ZoneGram',
+                Text('Auto City',
                   style: TextStyle(
                       fontSize: 50.0,   //Add style to text******
-                      fontFamily: 'Pacifico'  //Need to add this font type to pubspec.yaml --fonts
+                      fontFamily: 'schyler'  //Need to add this font type to pubspec.yaml --fonts
                   ),
                 ),
 
@@ -290,15 +274,48 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
 
-                      Padding( //Vehicle brand model
-                        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),   //Add padding around text field
-                        child: DropdownButtonFormField(    // Input label email
-                          decoration: InputDecoration(labelText: 'Brand / Model'),
-                          value: _selectedBrand,
-                          items: _dropdownMenuItem,
-                          onChanged: onChangedDropDownItem,
 
-                        ),
+                      StreamBuilder<QuerySnapshot>(
+
+                        stream: Firestore.instance.collection('cartypes').snapshots(),
+                        builder: (context, snapshot){
+                          if(!snapshot.hasData){
+                            Text('Loading');
+                          }
+                          else{
+                            List<DropdownMenuItem> brandd=[];
+                            for(int i=0;i<snapshot.data.documents.length;i++){
+                              DocumentSnapshot snap = snapshot.data.documents[i];
+
+                              brandd.add(
+                                DropdownMenuItem(
+                                  child: Text(
+                                    snap.documentID,
+                                  ),
+                                  value: "${snap.documentID}",
+                                )
+                              );
+                            }
+                            return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),   //Add padding around text field
+                          child: DropdownButtonFormField(
+                          decoration: InputDecoration(labelText: 'Brand'),
+                            // ignore: missing_return, missing_return, missing_return, missing_return, missing_return, missing_return, missing_return, missing_return
+                            value: _currentcarBrands,
+                            items: brandd,
+                            onChanged: (ss){
+
+                              setState(() {
+                                _currentcarBrands = ss;
+                              });
+                            },
+                            isExpanded: false,
+
+                          ),
+                            );
+                          }
+                          return null;
+                        },
                       ),
 
                       Padding( //Vehicle year

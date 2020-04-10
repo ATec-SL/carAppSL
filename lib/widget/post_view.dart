@@ -8,6 +8,8 @@ import 'package:carappsl/Services/database_service.dart';
 import 'package:carappsl/models/post_model.dart';
 import 'package:carappsl/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:getflutter/getflutter.dart';
+
 
 class PostView extends StatefulWidget {
 

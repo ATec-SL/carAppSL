@@ -124,7 +124,7 @@ class FirebaseProvider {
     QuerySnapshot querySnapshot;
     QuerySnapshot snapshot =
         await _firestore.collectionGroup("userPosts")
-//        .orderBy('timestamp', descending: true)
+        .orderBy('timestamp', descending: true)
         .getDocuments();
 
 
@@ -148,11 +148,6 @@ class FirebaseProvider {
         updatedList.add(snapshot.documents[i]);
       }
     }
-
-
-
-    // fetchSearchPosts(updatedList);
-    print("UPDATED LIST LENGTH : ${updatedList.length}");
     return updatedList;
   }
 

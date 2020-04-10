@@ -12,5 +12,6 @@ final followersRef = firestore.collection('followers');
 final feedRef = firestore.collection('feeds');
 final likesRef = firestore.collection('likes');
 final commentRef = firestore.collection('comments');
+final cartypes = firestore.collection('cartypes');
 
 

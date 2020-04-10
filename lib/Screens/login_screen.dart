@@ -1,6 +1,7 @@
 import 'package:carappsl/Screens/signup_screen.dart';
 import 'package:carappsl/Services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:getflutter/getflutter.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -35,16 +36,17 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,  //To center the title'
               children: <Widget>[    //Inside this widget we do all the login screen design
 
-                CircleAvatar(   //Add app logo
+                GFAvatar(   //Add app logo
                   radius: 50.0,
                   backgroundColor: Colors.grey,
-                  backgroundImage: AssetImage('assets/images/logotemp.png')
+                  backgroundImage: AssetImage('assets/images/logo.png'),
+                    shape: GFAvatarShape.square
                 ),
 
-                Text('ZoneGram',
+                Text('Auto City',
                   style: TextStyle(
                     fontSize: 50.0,   //Add style to text******
-                    fontFamily: 'Pacifico'  //Need to add this font type to pubspec.yaml --fonts
+                    fontFamily: 'schyler'  //Need to add this font type to pubspec.yaml --fonts
                 ),
                 ),
 
@@ -78,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 250.0,
                         child: FlatButton(    // Login button
                           onPressed:submit,
-                          color: Colors.lightBlue,
+                          color: Colors.lightGreen,
                           padding: EdgeInsets.all(10.0),
                           child: Text('Login',
                           style: TextStyle(color: Colors.white, fontSize: 18.0),
@@ -92,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 250.0,
                         child: FlatButton(    // Login button
                           onPressed: () => Navigator.pushNamed(context, SignupScreen.id),
-                          color: Colors.lightBlue,
+                          color: Colors.lightGreen,
                           padding: EdgeInsets.all(10.0),
                           child: Text('Go to Signup',
                             style: TextStyle(color: Colors.white, fontSize: 18.0),

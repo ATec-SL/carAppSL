@@ -14,10 +14,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'Zonegram',
+          'Auto City',
           style: TextStyle(
             color: Colors.black,
-            fontFamily: 'Pacifico',
+            fontFamily: 'schyler',
             fontSize: 35.0,
           ),
         ),
