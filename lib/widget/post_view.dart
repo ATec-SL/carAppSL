@@ -10,9 +10,7 @@ import 'package:carappsl/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
 
-
 class PostView extends StatefulWidget {
-
   final String currentUserId;
   final Post post;
   final User author;
@@ -21,12 +19,9 @@ class PostView extends StatefulWidget {
 
   @override
   _PostViewState createState() => _PostViewState();
-
 }
 
-
-class _PostViewState extends State<PostView>{
-
+class _PostViewState extends State<PostView> {
   int _likeCount = 0;
   bool _isLiked = false;
   bool _heartAnim = false;
@@ -36,49 +31,43 @@ class _PostViewState extends State<PostView>{
     // TODO: implement initState
     super.initState();
 
-    _likeCount =widget.post.likeCOunt;
+    _likeCount = widget.post.likeCOunt;
     _initPostLiked();
   }
 
   @override
   void didUpdateWIdget(PostView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if(oldWidget.post.likeCOunt != widget.post.likeCOunt){
+    if (oldWidget.post.likeCOunt != widget.post.likeCOunt) {
       _likeCount = widget.post.likeCOunt;
     }
   }
 
-  _initPostLiked() async{
+  _initPostLiked() async {
     bool isLiked = await DatabaseService.didLikePost(
-      currentUserId: widget.currentUserId, post: widget.post
-    );
+        currentUserId: widget.currentUserId, post: widget.post);
 
-    if(mounted){
+    if (mounted) {
       setState(() {
         _isLiked = isLiked;
       });
     }
   }
 
-
   _likePOst() {
-
-    if(_isLiked){
+    if (_isLiked) {
       //Unlike Post
       DatabaseService.unLikePost(
-        currentUserId: widget.currentUserId, post: widget.post
-      );
+          currentUserId: widget.currentUserId, post: widget.post);
 
       setState(() {
         _isLiked = false;
         _likeCount = _likeCount - 1;
       });
-
-    } else{
+    } else {
       //like Post
       DatabaseService.likePost(
-          currentUserId: widget.currentUserId, post: widget.post
-      );
+          currentUserId: widget.currentUserId, post: widget.post);
 
       setState(() {
         _heartAnim = true;
@@ -86,29 +75,29 @@ class _PostViewState extends State<PostView>{
         _likeCount = _likeCount + 1;
       });
 
-      Timer(Duration (milliseconds: 350 ), (){
+      Timer(Duration(milliseconds: 350), () {
         setState(() {
           _heartAnim = false;
         });
       });
-
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         GestureDetector(
-          onTap: () => Navigator.push(context, MaterialPageRoute(
-            builder: (_) => ProfileScreenN(
-              currentUserId: widget.currentUserId,
-              userId: widget.post.authorId,
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ProfileScreenN(
+                currentUserId: widget.currentUserId,
+                userId: widget.post.authorId,
+              ),
             ),
-          ),),
-          child:  Container(
+          ),
+          child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
             child: Row(
               children: <Widget>[
@@ -117,9 +106,12 @@ class _PostViewState extends State<PostView>{
                   backgroundColor: Colors.grey,
                   backgroundImage: widget.author.profileImageUrl.isEmpty
                       ? AssetImage('assets/images/placeHolder.png')
-                      : CachedNetworkImageProvider(widget.author.profileImageUrl),
+                      : CachedNetworkImageProvider(
+                          widget.author.profileImageUrl),
                 ),
-                SizedBox(width: 8.0,),
+                SizedBox(
+                  width: 8.0,
+                ),
                 Text(
                   widget.author.name,
                   style: TextStyle(
@@ -131,7 +123,6 @@ class _PostViewState extends State<PostView>{
             ),
           ),
         ),
-
         GestureDetector(
           onDoubleTap: _likePOst,
           child: Stack(
@@ -141,96 +132,90 @@ class _PostViewState extends State<PostView>{
                 height: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(widget.post.imageUrl),
-                      fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(widget.post.imageUrl),
+                  fit: BoxFit.cover,
+                )),
+              ),
+              _heartAnim
+                  ? Animator(
+                      duration: Duration(milliseconds: 300),
+                      tween: Tween(begin: 0.5, end: 1.4),
+                      curve: Curves.elasticInOut,
+                      builder: (anim) => Transform.scale(
+                        scale: anim.value,
+                        child: Icon(
+                          Icons.favorite,
+                          size: 100.0,
+                          color: Colors.red[400],
+                        ),
+                      ),
                     )
-                ),),
-              _heartAnim ? Animator(
-                duration: Duration(milliseconds: 300),
-                tween: Tween(begin: 0.5, end: 1.4),
-                curve: Curves.elasticInOut,
-                builder: (anim) => Transform.scale(scale: anim.value,
-                child: Icon(
-                  Icons.favorite,
-                  size: 100.0,
-                  color: Colors.red[400],
-                ),),
-
-              )
                   : SizedBox.shrink(),
             ],
           ),
         ),
-
-
-
-
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0 ),
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: <Widget>[
                   IconButton(
-                    icon: _isLiked ? Icon(Icons.favorite,
-                    color: Colors.red,)
-                        :Icon(Icons.favorite_border),
+                    icon: _isLiked
+                        ? Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                        : Icon(Icons.favorite_border),
                     iconSize: 30.0,
                     onPressed: _likePOst,
                   ),
                   IconButton(
                     icon: Icon(Icons.comment),
                     iconSize: 30.0,
-                    onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(
-                      builder: (_) => CommentScreen(
-                        postId: widget.post.id,
-                        likeCount: _likeCount,
-                      )
-
-                    )),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => CommentScreen(
+                                  postId: widget.post.id,
+                                  likeCount: _likeCount,
+                                ))),
                   )
                 ],
               ),
-              Padding(padding: EdgeInsets.symmetric(horizontal: 12.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
                   '${_likeCount.toString()} likes',
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),),
-              SizedBox(height: 4.0,),
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
               Row(
                 children: <Widget>[
-                  Container(margin: EdgeInsets.only(
-                      left: 12.0,
-                      right: 6.0
-                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 12.0, right: 6.0),
                     child: Text(
                       widget.author.name,
                       style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
-
-                      ),
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
                   ),
-
                   Expanded(
                     child: Text(
-                      widget.post.caption ,
-                      style: TextStyle(
-                          fontSize: 16.0
-                      ),
+                      widget.post.caption,
+                      style: TextStyle(fontSize: 16.0),
                       overflow: TextOverflow.ellipsis,
                     ),
                   )
-
                 ],
               ),
-              SizedBox(height: 12.0,)
+              SizedBox(
+                height: 12.0,
+              )
             ],
           ),
         )

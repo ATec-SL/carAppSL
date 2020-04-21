@@ -63,7 +63,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(usersList[index].profileImageUrl),
+                    backgroundImage:
+                        NetworkImage(usersList[index].profileImageUrl),
                   ),
                   title: Text(usersList[index].name),
                 ),
@@ -76,6 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class ChatSearch extends SearchDelegate<String> {
   List<User> usersList;
+
   ChatSearch({this.usersList});
 
   @override
@@ -129,7 +131,8 @@ class ChatSearch extends SearchDelegate<String> {
                           ))));
             },
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(suggestionsList[index].profileImageUrl),
+              backgroundImage:
+                  NetworkImage(suggestionsList[index].profileImageUrl),
             ),
             title: Text(suggestionsList[index].name),
           )),

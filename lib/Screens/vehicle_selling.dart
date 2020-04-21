@@ -1,13 +1,10 @@
-
-import 'package:carappsl/Screens/AdCard.dart';
+import 'package:carappsl/widget/SellingWidget.dart';
 import 'package:carappsl/models/post_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:carappsl/models/user_model.dart';
 import 'package:carappsl/resources/repository.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-
 
 class VehicleSellingScreen extends StatefulWidget {
   @override
@@ -49,9 +46,6 @@ class _VehicleSellingScreenState extends State<VehicleSellingScreen> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     print("INSIDE BUILD");
@@ -65,25 +59,20 @@ class _VehicleSellingScreenState extends State<VehicleSellingScreen> {
             color: Colors.black,
           ),
         ),
-
       ),
       body: FutureBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-
-          return  StaggeredGridView.countBuilder(
-            crossAxisCount: 4,
-            itemCount: list.length,
-            itemBuilder: (BuildContext context, int index) {
-              return AdCard(list[index].data, context, list[index].documentID);
-            },
-            staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-          );
-
-        }
-
-      ),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return StaggeredGridView.countBuilder(
+          crossAxisCount: 4,
+          itemCount: list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return AdCard(list[index].data, context, list[index].documentID);
+          },
+          staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
+        );
+      }),
     );
   }
 }

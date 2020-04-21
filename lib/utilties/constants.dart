@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -13,5 +11,3 @@ final feedRef = firestore.collection('feeds');
 final likesRef = firestore.collection('likes');
 final commentRef = firestore.collection('comments');
 final cartypes = firestore.collection('cartypes');
-
-

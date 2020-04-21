@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AdCard extends StatelessWidget {
-
   AdCard(this.ad, this.context, this.userId);
 
   final ad;
@@ -13,58 +12,61 @@ class AdCard extends StatelessWidget {
 
   Widget _buildImageWidget() {
     if (ad["profileImageUrl"] != null && ad["profileImageUrl"] != '') {
-
       return Material(
           child: InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
                   builder: ((context) => ProfileScreenN(
-                    currentUserId: Provider.of<userData>(context).currentUserId,
-                    userId: userId,
-                  ))
-              ));
-            },
-            child: Container(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Image.network(ad["profileImageUrl"])
-              ),),
-          )
-      );
-
+                        currentUserId:
+                            Provider.of<userData>(context).currentUserId,
+                        userId: userId,
+                      ))));
+        },
+        child: Container(
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: Image.network(ad["profileImageUrl"])),
+        ),
+      ));
     } else {
       return Material(
           child: InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
                   builder: ((context) => ProfileScreenN(
-                    currentUserId: Provider.of<userData>(context).currentUserId,
-                    userId: userId,
-                  ))
-              ));
-            },
-            child: Container(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: Image.network('https://uae.microless.com/cdn/no_image.jpg')
-              ),),
-          )
-      );
-
+                        currentUserId:
+                            Provider.of<userData>(context).currentUserId,
+                        userId: userId,
+                      ))));
+        },
+        child: Container(
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child:
+                  Image.network('https://uae.microless.com/cdn/no_image.jpg')),
+        ),
+      ));
     }
   }
 
   Widget _buildUserNameWidget() {
     if (ad["name"] != null && ad["name"] != '') {
-      return Text(ad["name"], style: TextStyle(fontWeight: FontWeight.bold),);
+      return Text(
+        ad["name"],
+        style: TextStyle(fontWeight: FontWeight.bold),
+      );
     } else {
       return SizedBox();
     }
   }
 
-  Widget _buildRegNoWidget() {
-    if (ad["vehiceRegNo"] != null && ad["vehiceRegNo"] != '') {
-      return Text(" ${ad["vehiceRegNo"]}");
+  Widget _buildYearWidget() {
+    if (ad["year"] != null && ad["year"] != '') {
+      return Text(" ${ad["year"]}");
     } else {
       return SizedBox();
     }
@@ -75,7 +77,9 @@ class AdCard extends StatelessWidget {
       return Row(
         children: <Widget>[
           Icon(Icons.directions_car),
-          SizedBox(width: 4.0,),
+          SizedBox(
+            width: 4.0,
+          ),
           Expanded(child: Text(ad["brandModel"]))
         ],
       );
@@ -93,7 +97,7 @@ class AdCard extends StatelessWidget {
           _buildImageWidget(),
           _buildUserNameWidget(),
           _buildModelWidget(),
-          _buildRegNoWidget(),
+          _buildYearWidget(),
         ],
       ),
     );

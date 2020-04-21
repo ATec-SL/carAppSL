@@ -17,20 +17,20 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-
   File image;
 
   TextEditingController captionController = TextEditingController();
   String caption = '';
   bool isLoading = false;
 
-  showSelectImageDialog(){
-    return Platform.isIOS ?  iosBottomSheet() : androdidDialog();
+  showSelectImageDialog() {
+    return Platform.isIOS ? iosBottomSheet() : androdidDialog();
   }
-  iosBottomSheet(){
+
+  iosBottomSheet() {
     showCupertinoModalPopup(
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return CupertinoActionSheet(
             title: Text('Add Photo'),
             actions: <Widget>[
@@ -51,10 +51,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         });
   }
 
-  androdidDialog(){
+  androdidDialog() {
     showDialog(
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return SimpleDialog(
             title: Text('Add Photo'),
             children: <Widget>[
@@ -67,22 +67,23 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 onPressed: () => handelImage(ImageSource.gallery),
               ),
               SimpleDialogOption(
-                child: Text('Cancel', style: TextStyle(
-                  color: Colors.redAccent,
-                ),),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.redAccent,
+                  ),
+                ),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
           );
-        }
-    );
-
+        });
   }
 
-  handelImage(ImageSource source) async{
+  handelImage(ImageSource source) async {
     Navigator.pop(context);
     File imageFile = await ImagePicker.pickImage(source: source);
-    if(imageFile != null) {
+    if (imageFile != null) {
 //      imageFile = await cropImage(imageFile);             New Feature
 
       setState(() {
@@ -94,18 +95,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   cropImage(File imageFile) async {
     File croppedImage = await ImageCropper.cropImage(
         sourcePath: imageFile.path,
-    aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0)
-    );
+        aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0));
     return croppedImage;
   }
 
-  submit() async{
-    if(!isLoading && image !=null && caption.isNotEmpty){
+  submit() async {
+    if (!isLoading && image != null && caption.isNotEmpty) {
       setState(() {
         isLoading = true;
       });
-
-
 
       //Create post
       String imageUrl = await StorageService.uploadPost(image);
@@ -119,20 +117,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
       DatabaseService.createPost(post);
 
-
       //Reset
       captionController.clear();
 
       setState(() {
         caption = '';
         image = null;
-        isLoading =false;
+        isLoading = false;
       });
     }
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,76 +134,71 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     final hegiht = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'Create Post',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => submit(),
-          ),
-        ],
-      ),
-      body: GestureDetector(
-        onTap: () =>FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          child: Container(
-            height: hegiht,
-            child: Column(
-              children: <Widget>[
-
-                isLoading
-                ? Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: LinearProgressIndicator(
-                    backgroundColor: Colors.blue[200],
-                    valueColor: AlwaysStoppedAnimation(Colors.blue),
-                  ),
-                )
-                : SizedBox.shrink(),
-                GestureDetector(
-                  onTap: showSelectImageDialog,
-                  child: Container(
-                      height: width,
-                      width: width,
-                      color: Colors.grey[300],
-                      child:image == null ? Icon(
-                        Icons.add_a_photo,
-                        color: Colors.white70,
-                        size: 150.0,
-                      )
-                          : Image(
-                        image: FileImage(image),
-                        fit: BoxFit.cover,
-                      )
-                  ),
-                ),
-
-                SizedBox(height: 20.0,),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0),
-                  child: TextField(
-                    controller: captionController,
-                    style: TextStyle(fontSize: 18.0),
-                    decoration: InputDecoration(
-                        labelText: 'Caption'
-                    ),
-                    onChanged: (input) => caption = input,
-                  ),
-                ),
-              ],
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            'Create Post',
+            style: TextStyle(
+              color: Colors.black,
             ),
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () => submit(),
+            ),
+          ],
         ),
-
-      )
-
-    );
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            child: Container(
+              height: hegiht,
+              child: Column(
+                children: <Widget>[
+                  isLoading
+                      ? Padding(
+                          padding: EdgeInsets.only(bottom: 10.0),
+                          child: LinearProgressIndicator(
+                            backgroundColor: Colors.blue[200],
+                            valueColor: AlwaysStoppedAnimation(Colors.blue),
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                  GestureDetector(
+                    onTap: showSelectImageDialog,
+                    child: Container(
+                        height: width,
+                        width: width,
+                        color: Colors.grey[300],
+                        child: image == null
+                            ? Icon(
+                                Icons.add_a_photo,
+                                color: Colors.white70,
+                                size: 150.0,
+                              )
+                            : Image(
+                                image: FileImage(image),
+                                fit: BoxFit.cover,
+                              )),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    child: TextField(
+                      controller: captionController,
+                      style: TextStyle(fontSize: 18.0),
+                      decoration: InputDecoration(labelText: 'Caption'),
+                      onChanged: (input) => caption = input,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }

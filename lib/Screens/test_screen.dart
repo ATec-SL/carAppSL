@@ -2,7 +2,6 @@ import 'package:carappsl/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatefulWidget {
-
   final String userId;
 
   TestScreen({this.userId});
@@ -14,19 +13,18 @@ class TestScreen extends StatefulWidget {
 class _TestScreenState extends State<TestScreen> {
   String name = 'Akash Jayaweera';
 
-  Widget buidCoverImage(Size screenSize){
+  Widget buidCoverImage(Size screenSize) {
     return Container(
-      height: screenSize.height /4.5,
-        decoration: BoxDecoration(
+      height: screenSize.height / 4.5,
+      decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/cover.jpg'),
-            fit: BoxFit.cover,
-          )
-        ),
+        image: AssetImage('assets/images/cover.jpg'),
+        fit: BoxFit.cover,
+      )),
     );
   }
 
-  Widget buildFullName(){
+  Widget buildFullName() {
     TextStyle naeTextStyle = TextStyle(
       fontFamily: 'Roboto',
       color: Colors.black,
@@ -39,7 +37,7 @@ class _TestScreenState extends State<TestScreen> {
     );
   }
 
-  Widget buildStatContainer(){
+  Widget buildStatContainer() {
     TextStyle ststLabeltextStyle = TextStyle(
       color: Colors.black,
       fontFamily: 'Roboto',
@@ -55,12 +53,10 @@ class _TestScreenState extends State<TestScreen> {
 
     return Container(
       height: 60.0,
-        margin: EdgeInsets.only(top: 8.0),
+      margin: EdgeInsets.only(top: 8.0),
       decoration: BoxDecoration(
         color: Color(0xFFeFF4F),
-
       ),
-
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -72,8 +68,7 @@ class _TestScreenState extends State<TestScreen> {
     );
   }
 
-  Widget buildStatItem( String label, String count){
-
+  Widget buildStatItem(String label, String count) {
     TextStyle ststLabeltextStyle = TextStyle(
       color: Colors.black,
       fontFamily: 'Roboto',
@@ -101,28 +96,24 @@ class _TestScreenState extends State<TestScreen> {
     );
   }
 
-  Widget buildProfileImage(){
+  Widget buildProfileImage() {
     return Center(
       child: Container(
         width: 140.0,
-          height: 140.0,
+        height: 140.0,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/u1.jpg'),
-            fit: BoxFit.cover
-          ),
-          borderRadius: BorderRadius.circular(80.0),
-          border: Border.all(
-            color:Colors.white,
-            width: 10.0,
-          )
-        ),
-
+            image: DecorationImage(
+                image: AssetImage('assets/images/u1.jpg'), fit: BoxFit.cover),
+            borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 10.0,
+            )),
       ),
     );
   }
 
-  Widget vehicleDetails(BuildContext context){
+  Widget vehicleDetails(BuildContext context) {
     TextStyle modelBrand = TextStyle(
       fontWeight: FontWeight.w500,
       color: Colors.black,
@@ -146,12 +137,16 @@ class _TestScreenState extends State<TestScreen> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          buidCoverImage(screenSize,),
+          buidCoverImage(
+            screenSize,
+          ),
           SafeArea(
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: screenSize.height / 7.4,),
+                  SizedBox(
+                    height: screenSize.height / 7.4,
+                  ),
                   buildProfileImage(),
                   buildFullName(),
                   buildStatContainer(),
@@ -162,8 +157,6 @@ class _TestScreenState extends State<TestScreen> {
           )
         ],
       ),
-
-
     );
   }
 }

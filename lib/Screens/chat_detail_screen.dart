@@ -85,9 +85,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 )
               : Column(
                   children: <Widget>[
-                   
                     ChatMessagesListWidget(),
-                    
                     chatInputWidget(),
                     SizedBox(
                       height: 20.0,
@@ -182,7 +180,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     int rand = Random().nextInt(10000);
 
     Im.Image image = Im.decodeImage(imageFile.readAsBytesSync());
-    Im.copyResize(image,);
+    Im.copyResize(
+      image,
+    );
 
     var newim2 = new File('$path/img_$rand.jpg')
       ..writeAsBytesSync(Im.encodeJpg(image, quality: 85));

@@ -5,6 +5,7 @@ import 'package:carappsl/models/user_data.dart';
 import 'package:carappsl/widget/post_view.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+
 //import 'package:flutter/services.dart';
 import 'package:carappsl/models/user_model.dart';
 import 'package:carappsl/Screens/edit_screen.dart';
@@ -14,19 +15,17 @@ import 'package:provider/provider.dart';
 
 import 'comments_screen.dart';
 
-
 class ProfileScreenN extends StatefulWidget {
-
   final String currentUserId;
   final String userId;
 
   ProfileScreenN({this.currentUserId, this.userId});
+
   @override
   _ProfileScreenNState createState() => _ProfileScreenNState();
 }
 
 class _ProfileScreenNState extends State<ProfileScreenN> {
-
   bool isFollowing = false;
   int followerCount = 0;
   int followingCount = 0;
@@ -35,9 +34,8 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
   int displayPosts = 0; //0- grid, 1- column
   User _profileUser;
 
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
     setupIsFollowing();
     setupFollowers();
@@ -46,7 +44,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     setUpProfileUser();
   }
 
-  setUpProfileUser() async{
+  setUpProfileUser() async {
     User profileUser = await DatabaseService.getUserWithId(widget.userId);
     setState(() {
       _profileUser = profileUser;
@@ -58,14 +56,11 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     setState(() {
       _posts = posts;
     });
-}
+  }
 
-
-  setupIsFollowing() async{
+  setupIsFollowing() async {
     bool isFollowingUser = await DatabaseService.isFollowingUser(
-      currentUserId: widget.currentUserId,
-      userID: widget.userId
-    );
+        currentUserId: widget.currentUserId, userID: widget.userId);
     setState(() {
       isFollowing = isFollowingUser;
     });
@@ -79,29 +74,23 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
   }
 
   setupFollowing() async {
-
     int userFollowingCount = await DatabaseService.numFollowing(widget.userId);
     setState(() {
       followingCount = userFollowingCount;
     });
   }
 
-
-  followOrUnfollow(){
-
-    if(isFollowing){
+  followOrUnfollow() {
+    if (isFollowing) {
       unFollowerUser();
-    } else{
+    } else {
       followUser();
     }
-
   }
 
-  unFollowerUser(){
+  unFollowerUser() {
     DatabaseService.unFollowUser(
-      currentUserId: widget.currentUserId,
-      userId: widget.userId
-    );
+        currentUserId: widget.currentUserId, userId: widget.userId);
 
     setState(() {
       isFollowing = false;
@@ -109,11 +98,9 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     });
   }
 
-  followUser(){
+  followUser() {
     DatabaseService.followUser(
-        currentUserId: widget.currentUserId,
-        userId: widget.userId
-    );
+        currentUserId: widget.currentUserId, userId: widget.userId);
 
     setState(() {
       isFollowing = true;
@@ -121,22 +108,20 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     });
   }
 
-
-  Widget buidCoverImage(Size screenSize, User user){
+  Widget buidCoverImage(Size screenSize, User user) {
     return Container(
-      height: screenSize.height /3.5,
+      height: screenSize.height / 3.5,
       decoration: BoxDecoration(
           image: DecorationImage(
-            image: user.profileImageUrl.isEmpty
-                ? AssetImage('assets/images/placeHolder.png')
-                : CachedNetworkImageProvider(user.profileImageUrl),
-            fit: BoxFit.cover,
-          )
-      ),
+        image: user.profileImageUrl.isEmpty
+            ? AssetImage('assets/images/placeHolder.png')
+            : CachedNetworkImageProvider(user.profileImageUrl),
+        fit: BoxFit.cover,
+      )),
     );
   }
 
-  Widget buildFullName(User user){
+  Widget buildFullName(User user) {
     TextStyle naeTextStyle = TextStyle(
       fontFamily: 'Roboto',
       color: Colors.black,
@@ -149,7 +134,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     );
   }
 
-  Widget buildStatContainer(){
+  Widget buildStatContainer() {
     TextStyle ststLabeltextStyle = TextStyle(
       color: Colors.black,
       fontFamily: 'Roboto',
@@ -169,8 +154,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
       decoration: BoxDecoration(
 //        color: Color(0xFFeFF4F),
 
-      ),
-
+          ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -182,8 +166,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     );
   }
 
-  Widget buildStatItem( String label, String count){
-
+  Widget buildStatItem(String label, String count) {
     TextStyle ststLabeltextStyle = TextStyle(
       color: Colors.black,
       fontFamily: 'Roboto',
@@ -211,7 +194,7 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     );
   }
 
-  Widget buildProfileImage(User user){
+  Widget buildProfileImage(User user) {
     return Center(
       child: Container(
         width: 140.0,
@@ -221,20 +204,17 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
                 image: user.profileImageUrl.isEmpty
                     ? AssetImage('assets/images/placeHolder.png')
                     : CachedNetworkImageProvider(user.profileImageUrl),
-                fit: BoxFit.cover
-            ),
+                fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(80.0),
             border: Border.all(
-              color:Colors.white,
+              color: Colors.white,
               width: 10.0,
-            )
-        ),
-
+            )),
       ),
     );
   }
 
-  Widget vehicleDetails(BuildContext context, String label, String value){
+  Widget vehicleDetails(BuildContext context, String label, String value) {
     TextStyle modelBrand = TextStyle(
       fontWeight: FontWeight.w500,
       color: Colors.black,
@@ -254,63 +234,71 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
           ),
           children: <TextSpan>[
             new TextSpan(text: label),
-            new TextSpan(text: value , style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 18.0)),
-
+            new TextSpan(
+                text: value,
+                style: new TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                    fontSize: 18.0)),
           ],
-
         ),
       ),
     );
   }
 
-  Widget editButton(User user){
-    return  user.id == Provider.of<userData>(context).currentUserId ? Container(
-      width: 200.0,
-      child: FlatButton(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(
-                builder: (_) => EditProfileScreen(user: user,)
-            )),
-        color: Colors.blue,
-        textColor: Colors.white,
-        child: Text(
-          'Edit Profile',
-          style: TextStyle(fontSize: 18.0),
-
-        ),
-      ),
-    ) : Container(
-      width: 200.0,
-      child: FlatButton(
-        onPressed: followOrUnfollow,
-        color: isFollowing ? Colors.grey[200] : Colors.blue,
-        textColor: isFollowing ? Colors.black : Colors.white,
-        child: Text(
-          isFollowing ? 'Unfollow' : 'Follow',
-          style: TextStyle(fontSize: 18.0),
-
-        ),
-      ),
-    );
+  Widget editButton(User user) {
+    return user.id == Provider.of<userData>(context).currentUserId
+        ? Container(
+            width: 200.0,
+            child: FlatButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => EditProfileScreen(
+                            user: user,
+                          ))),
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text(
+                'Edit Profile',
+                style: TextStyle(fontSize: 18.0),
+              ),
+            ),
+          )
+        : Container(
+            width: 200.0,
+            child: FlatButton(
+              onPressed: followOrUnfollow,
+              color: isFollowing ? Colors.grey[200] : Colors.blue,
+              textColor: isFollowing ? Colors.black : Colors.white,
+              child: Text(
+                isFollowing ? 'Unfollow' : 'Follow',
+                style: TextStyle(fontSize: 18.0),
+              ),
+            ),
+          );
   }
 
-  buildToggleButtons(){
+  buildToggleButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         IconButton(
           icon: Icon(Icons.grid_on),
           iconSize: 30.0,
-            color: displayPosts == 0 ? Theme.of(context).primaryColor : Colors.grey[300],
+          color: displayPosts == 0
+              ? Theme.of(context).primaryColor
+              : Colors.grey[300],
           onPressed: () => setState(() {
             displayPosts = 0;
           }),
         ),
-
         IconButton(
           icon: Icon(Icons.list),
           iconSize: 30.0,
-          color: displayPosts == 1 ? Theme.of(context).primaryColor : Colors.grey[300],
+          color: displayPosts == 1
+              ? Theme.of(context).primaryColor
+              : Colors.grey[300],
           onPressed: () => setState(() {
             displayPosts = 1;
           }),
@@ -319,18 +307,17 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     );
   }
 
-  buildTilePost(Post post){
+  buildTilePost(Post post) {
     return GridTile(
       child: GestureDetector(
         onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => CommentScreen(
-                  postId: post.id,
-                  likeCount: post.likeCOunt,
-                ),
-
+          context,
+          MaterialPageRoute(
+            builder: (_) => CommentScreen(
+              postId: post.id,
+              likeCount: post.likeCOunt,
             ),
+          ),
         ),
         child: Image(
           image: CachedNetworkImageProvider(post.imageUrl),
@@ -340,33 +327,34 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
     );
   }
 
-  buildDisplayPosts(){
-    if(displayPosts == 0){
+  buildDisplayPosts() {
+    if (displayPosts == 0) {
       //grid
 
       List<GridTile> tiles = [];
 
       _posts.forEach(
-          (post) => tiles.add(buildTilePost(post)),
+        (post) => tiles.add(buildTilePost(post)),
       );
-      return GridView.count(crossAxisCount: 3,
-      childAspectRatio: 1.0,
-          mainAxisSpacing: 2.0,
-          crossAxisSpacing: 2.0,
-          shrinkWrap: true,
+      return GridView.count(
+        crossAxisCount: 3,
+        childAspectRatio: 1.0,
+        mainAxisSpacing: 2.0,
+        crossAxisSpacing: 2.0,
+        shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: tiles,
       );
-    }else{
+    } else {
       //column
       List<PostView> postView = [];
       _posts.forEach((post) {
         postView.add(
-            PostView(
-              currentUserId: widget.currentUserId,
-              post: post,
-              author: _profileUser,
-            ),
+          PostView(
+            currentUserId: widget.currentUserId,
+            post: post,
+            author: _profileUser,
+          ),
         );
       });
 
@@ -394,21 +382,16 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(
-                Icons.exit_to_app
-              ),
+              icon: Icon(Icons.exit_to_app),
               onPressed: AuthService.logout,
             )
           ],
         ),
         backgroundColor: Colors.white,
-
         body: FutureBuilder(
-
           future: usersRef.document(widget.userId).get(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-
-            if(!snapshot.hasData){
+            if (!snapshot.hasData) {
               return Center(
                 child: CircularProgressIndicator(),
               );
@@ -416,44 +399,40 @@ class _ProfileScreenNState extends State<ProfileScreenN> {
 
             User user = User.fromDoc(snapshot.data);
             return Scaffold(
-
               body: Stack(
                 children: <Widget>[
-              SafeArea(
-
-                child: SingleChildScrollView(
-
-                  child: Column(
-                    children: <Widget>[
-                      buidCoverImage(screenSize, user),
-                      SizedBox(height: screenSize.height / 58.4,),
+                  SafeArea(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          buidCoverImage(screenSize, user),
+                          SizedBox(
+                            height: screenSize.height / 58.4,
+                          ),
 
 //                      buildProfileImage(user),
-                      buildFullName(user),
-                      buildStatContainer(),
-                      vehicleDetails(context, "Mobel / Brand : ", user.brandModel),
-                      vehicleDetails(context, "Registration No : ", user.vehiceRegNo),
-                      vehicleDetails(context, "Model Year : ", user.year),
-                      vehicleDetails(context, "Transmission : ", user.transmission),
-                      vehicleDetails(context, "Fuel Type : ", user.fuelType),
-                      vehicleDetails(context, "", user.bio),
-                      editButton(user),
-                      buildToggleButtons(),
-                      Divider(),
-                      buildDisplayPosts(),
-
-
-
-                    ],
+                          buildFullName(user),
+                          buildStatContainer(),
+                          vehicleDetails(
+                              context, "Mobel / Brand : ", user.brandModel),
+                          vehicleDetails(context, "Model Year : ", user.year),
+                          vehicleDetails(
+                              context, "Transmission : ", user.transmission),
+                          vehicleDetails(
+                              context, "Fuel Type : ", user.fuelType),
+                          vehicleDetails(context, "", user.bio),
+                          editButton(user),
+                          buildToggleButtons(),
+                          Divider(),
+                          buildDisplayPosts(),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
                 ],
               ),
             );
           },
-        )
-
-    );
+        ));
   }
 }

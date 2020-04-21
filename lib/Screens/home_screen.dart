@@ -11,17 +11,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
-
 class HomeScreeen extends StatefulWidget {
-
-
   @override
   _HomeScreeenState createState() => _HomeScreeenState();
 }
 
 class _HomeScreeenState extends State<HomeScreeen> {
-
   int currentTab = 0;
   PageController pageController;
 
@@ -35,70 +30,59 @@ class _HomeScreeenState extends State<HomeScreeen> {
   Widget build(BuildContext context) {
     final String currentUserId = Provider.of<userData>(context).currentUserId;
     return Scaffold(
-
-
       body: PageView(
         controller: pageController,
         children: <Widget>[
-
-          FeedScreen(currentUserId: currentUserId,),
+          FeedScreen(
+            currentUserId: currentUserId,
+          ),
           InstaSearchScreen(),
           CreatePostScreen(),
           VehicleSellingScreen(),
-          ProfileScreenN(currentUserId: currentUserId, userId: currentUserId ),
-
+          ProfileScreenN(currentUserId: currentUserId, userId: currentUserId),
         ],
-        onPageChanged: (int index){
-          setState(() {
-            currentTab  = index;
-          });
-
-        },
-      ),
-      bottomNavigationBar: CupertinoTabBar(
-
-        currentIndex: currentTab,
-        onTap: (int index){
+        onPageChanged: (int index) {
           setState(() {
             currentTab = index;
           });
-          pageController.animateToPage(
-              index,
-              duration: Duration(milliseconds: 200),
-              curve: Curves.easeIn);
+        },
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        currentIndex: currentTab,
+        onTap: (int index) {
+          setState(() {
+            currentTab = index;
+          });
+          pageController.animateToPage(index,
+              duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         },
         activeColor: Colors.black,
         items: [
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.home,
-                size: 32.0,
-              )
-          ),
+            Icons.home,
+            size: 32.0,
+          )),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.search,
-                size: 32.0,
-              )
-          ),
+            Icons.search,
+            size: 32.0,
+          )),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.photo_camera,
-                size: 32.0,
-              )
-          ),
+            Icons.photo_camera,
+            size: 32.0,
+          )),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.directions_car,
-                size: 32.0,
-              )
-          ),
+            Icons.directions_car,
+            size: 32.0,
+          )),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.account_circle,
-                size: 32.0,
-              )
-          )
+            Icons.account_circle,
+            size: 32.0,
+          ))
         ],
       ),
     );

@@ -48,7 +48,6 @@ class _InstaSearchScreenState extends State<InstaSearchScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +58,8 @@ class _InstaSearchScreenState extends State<InstaSearchScreen> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              showSearch(context: context, delegate: DataSearch(userList: usersList));
+              showSearch(
+                  context: context, delegate: DataSearch(userList: usersList));
             },
           )
         ],
@@ -87,10 +87,10 @@ class _InstaSearchScreenState extends State<InstaSearchScreen> {
                     context,
                     MaterialPageRoute(
                         builder: ((context) => ProfileScreenN(
-                          currentUserId: Provider.of<userData>(context).currentUserId,
-                          userId: list[index].data['authorId'],
-                        ))
-                    ));
+                              currentUserId:
+                                  Provider.of<userData>(context).currentUserId,
+                              userId: list[index].data['authorId'],
+                            ))));
               },
             );
           })),
@@ -99,9 +99,9 @@ class _InstaSearchScreenState extends State<InstaSearchScreen> {
 }
 
 class DataSearch extends SearchDelegate<String> {
+  List<User> userList;
 
-   List<User> userList;
-   DataSearch({this.userList});
+  DataSearch({this.userList});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -131,7 +131,7 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     return null;
-   // return Center(child: Container(width: 50.0, height: 50.0, color: Colors.red, child: Text(query),));
+    // return Center(child: Container(width: 50.0, height: 50.0, color: Colors.red, child: Text(query),));
   }
 
   @override
@@ -143,18 +143,19 @@ class DataSearch extends SearchDelegate<String> {
       itemCount: suggestionsList.length,
       itemBuilder: ((context, index) => ListTile(
             onTap: () {
-              
-           //   showResults(context);
-              Navigator.push(context, MaterialPageRoute(
-                  builder: ((context) => ProfileScreenN(
-                    currentUserId: Provider.of<userData>(context).currentUserId,
-                    userId: suggestionsList[index].id,
-                  ))
-              ));
-              
+              //   showResults(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => ProfileScreenN(
+                            currentUserId:
+                                Provider.of<userData>(context).currentUserId,
+                            userId: suggestionsList[index].id,
+                          ))));
             },
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(suggestionsList[index].profileImageUrl),
+              backgroundImage:
+                  NetworkImage(suggestionsList[index].profileImageUrl),
             ),
             title: Text(suggestionsList[index].name),
           )),
